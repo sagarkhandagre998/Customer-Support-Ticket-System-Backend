@@ -1,0 +1,51 @@
+server:
+  port: 8080
+  
+
+spring:
+  datasource:
+     url: jdbc:postgresql://ep-damp-meadow-a1j07ycs-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require
+     username: neondb_owner
+     password: npg_70JLGnWoyHri
+     driver-class-name: org.postgresql.Driver
+
+     hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      connection-timeout: 30000
+      idle-timeout: 30000
+      max-lifetime: 180000
+
+
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: sagar.khandagre998@gmail.com
+    password: jjyeiiufcivliadc   # ⚠️ Use Gmail App Password, NOT your regular password
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+          timeout: 5000
+          connectiontimeout: 5000
+
+app:
+  jwt:
+    secret: N4T7X2zG6mVq8jR0P5sLbA9nYcUqZ3oR1kWmV7tC9eXfQ2hJ0lMnR5yU8bJvH1Kd
+    expiration-ms: 3600000
+
+
+
