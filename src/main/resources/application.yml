@@ -1,22 +1,22 @@
 server:
-  port: 8080
-  
+  port: ${PORT:8080}  # Render sets PORT environment variable
 
 spring:
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:production}
+  
   datasource:
-     url: jdbc:postgresql://ep-damp-meadow-a1j07ycs-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require
-     username: neondb_owner
-     password: npg_70JLGnWoyHri
-     driver-class-name: org.postgresql.Driver
-
-     hikari:
+    url: ${DB_URL:jdbc:postgresql://ep-damp-meadow-a1j07ycs-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require}
+    username: ${DB_USERNAME:neondb_owner}
+    password: ${DB_PASSWORD:npg_70JLGnWoyHri}
+    driver-class-name: org.postgresql.Driver
+    
+    hikari:
       maximum-pool-size: 10
       minimum-idle: 2
       connection-timeout: 30000
       idle-timeout: 30000
       max-lifetime: 180000
-
-
 
   jpa:
     hibernate:
@@ -24,15 +24,20 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+        show_sql: false  # Disable SQL logging in production
+        format_sql: false
+    show-sql: false  # Disable SQL logging in production
+
   flyway:
     enabled: true
     locations: classpath:db/migration
+    baseline-on-migrate: true
 
   mail:
     host: smtp.gmail.com
     port: 587
-    username: sagar.khandagre998@gmail.com
-    password: jjyeiiufcivliadc   # ⚠️ Use Gmail App Password, NOT your regular password
+    username: ${EMAIL_USERNAME:sagar.khandagre998@gmail.com}
+    password: ${EMAIL_PASSWORD:jjyeiiufcivliadc}
     properties:
       mail:
         smtp:
@@ -42,10 +47,43 @@ spring:
           timeout: 5000
           connectiontimeout: 5000
 
+  # Production logging configuration
+  output:
+    ansi:
+      enabled: never  # Disable colored output in production
+
+# Application specific configuration
 app:
   jwt:
-    secret: N4T7X2zG6mVq8jR0P5sLbA9nYcUqZ3oR1kWmV7tC9eXfQ2hJ0lMnR5yU8bJvH1Kd
-    expiration-ms: 3600000
+    secret: ${JWT_SECRET:N4T7X2zG6mVq8jR0P5sLbA9nYcUqZ3oR1kWmV7tC9eXfQ2hJ0lMnR5yU8bJvH1Kd}
+    expiration-ms: ${JWT_EXPIRATION_MS:3600000}
+
+# Management endpoints for monitoring
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: when-authorized
+  info:
+    env:
+      enabled: true
+
+# Logging configuration for production
+logging:
+  level:
+    root: INFO
+    com.application: INFO
+    org.springframework.security: WARN
+    org.hibernate.SQL: WARN
+    org.hibernate.type.descriptor.sql.BasicBinder: WARN
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: logs/application.log
 
 
 

@@ -64,49 +64,7 @@ public class TicketServiceImpl implements TicketService {
 
         return saved;
     }
-    @Override
-    public List<Ticket> getTicketsWithFilters(User currentUser, TicketFilters filters, int page, int size) {
-        System.out.println("In get tickets with filters service");
-        List<Ticket> tickets;
-        
-        // Create Pageable object
-        Pageable pageable = Pageable.ofSize(size).withPage(page);
-        
-        // Apply role-based access control
-        if ("ROLE_ADMIN".equals(currentUser.getRole().getName())) {
-            // Admin sees all tickets
-            tickets = ticketRepository.findAllWithFilters(
-                filters.getStatus(), 
-                filters.getPriority(), 
-                filters.getCategory(), 
-                filters.getAssigneeId() != null ? Long.valueOf(filters.getAssigneeId()) : null, 
-                filters.getSearch(), 
-                pageable
-            );
-        } else if ("ROLE_SUPPORT_AGENT".equals(currentUser.getRole().getName())) {
-            // Support agents see assigned tickets and open tickets
-            tickets = ticketRepository.findByAssigneeOrStatus(
-                currentUser.getId(), 
-                "OPEN", 
-                filters.getPriority(), 
-                filters.getCategory(), 
-                filters.getSearch(), 
-                pageable
-            );
-        } else {
-            // Regular users see only their own tickets
-            tickets = ticketRepository.findByOwnerIdAndFilters(
-                currentUser.getId(), 
-                filters.getStatus(), 
-                filters.getPriority(), 
-                filters.getCategory(), 
-                filters.getSearch(), 
-                pageable
-            );
-        }
-        
-        return tickets;
-    }
+ 
 
     @Override
     public Ticket getTicketById(Long id, String email) {
@@ -174,4 +132,5 @@ public class TicketServiceImpl implements TicketService {
     public void deleteTicket(Long id) {
         ticketRepository.deleteById(id);
     }
+
 }

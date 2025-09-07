@@ -19,7 +19,6 @@ public interface TicketService {
     List<Ticket> getMyTickets(String token);
     Ticket updateStatus(Long id, String email, String status);
     void deleteTicket(Long id); 
-    public List<Ticket> getTicketsWithFilters(User currentUser, TicketFilters filters, int page, int size);
 
 }
 

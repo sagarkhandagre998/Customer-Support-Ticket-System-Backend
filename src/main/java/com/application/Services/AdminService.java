@@ -19,5 +19,6 @@ public interface AdminService {
     List<Ticket> getAllTickets();
     Ticket forceUpdateTicketStatus(Long ticketId, String status);
     Ticket reassignTicket(Long ticketId, Long userId);
+    Ticket getTicketById(Long id);
 
 }

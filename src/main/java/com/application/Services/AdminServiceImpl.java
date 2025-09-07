@@ -130,5 +130,14 @@ public class AdminServiceImpl implements AdminService {
         return saved;
     }
 
+     @Override
+     public Ticket getTicketById(Long id) {
+        
+        Ticket ticket = ticketRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Ticket not found: " + id));
+
+        return ticket;
+     }         
+
     
 }

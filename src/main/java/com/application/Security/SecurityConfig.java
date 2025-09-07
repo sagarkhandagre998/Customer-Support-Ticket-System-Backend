@@ -59,6 +59,7 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
             .requestMatchers("/auth/**").permitAll()
             .requestMatchers("/health").permitAll()
             .requestMatchers("/admin/**").hasRole("ADMIN")
+            .requestMatchers("/agent/**").hasRole("AGENT")
             .requestMatchers("/tickets/**").hasAnyRole("USER","AGENT", "ADMIN")
             .requestMatchers("/dashboard/**").hasAnyRole("USER","AGENT", "ADMIN")
             .anyRequest().authenticated()

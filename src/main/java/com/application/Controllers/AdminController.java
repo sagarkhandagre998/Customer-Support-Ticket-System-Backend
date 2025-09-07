@@ -60,6 +60,12 @@ public class AdminController {
         return adminService.getAllTickets();
     }
 
+    // Get ticket by ID
+    @GetMapping("/tickets/{id}")
+    public Ticket getTicket(@PathVariable Long id) {
+        return adminService.getTicketById(id);
+    }
+
 
     // Force update ticket status
     @PatchMapping("/tickets/{id}/status")
@@ -74,9 +80,6 @@ public class AdminController {
         Ticket updated = adminService.reassignTicket(id, userId);
         return ResponseEntity.ok(updated);
     }
-
-
-
 
 
 }
