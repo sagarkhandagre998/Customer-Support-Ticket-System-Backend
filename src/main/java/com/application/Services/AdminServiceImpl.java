@@ -87,12 +87,12 @@ public class AdminServiceImpl implements AdminService {
         ticket.setStatus(status.toUpperCase());
         Ticket saved = ticketRepository.save(ticket);
 
-        // ✅ Notify owner
-        emailService.sendMail(
-                ticket.getOwner().getEmail(),
-                "Ticket Status Updated",
-                "Your ticket #" + ticket.getId() + " is now " + ticket.getStatus()
-        );
+        // // ✅ Notify owner
+        // emailService.sendMail(
+        //         ticket.getOwner().getEmail(),
+        //         "Ticket Status Updated",
+        //         "Your ticket #" + ticket.getId() + " is now " + ticket.getStatus()
+        // );
 
         return saved;
     }
@@ -113,19 +113,19 @@ public class AdminServiceImpl implements AdminService {
         ticket.setAssignee(newAssignee);
         Ticket saved = ticketRepository.save(ticket);
 
-        // ✅ Notify agent
-        emailService.sendMail(
-                newAssignee.getEmail(),
-                "New Ticket Assigned",
-                "You have been assigned ticket #" + ticket.getId() + " with subject: " + ticket.getSubject()
-        );
+        // // ✅ Notify agent
+        // emailService.sendMail(
+        //         newAssignee.getEmail(),
+        //         "New Ticket Assigned",
+        //         "You have been assigned ticket #" + ticket.getId() + " with subject: " + ticket.getSubject()
+        // );
 
-        // ✅ Notify owner
-        emailService.sendMail(
-                ticket.getOwner().getEmail(),
-                "Ticket Reassigned",
-                "Your ticket #" + ticket.getId() + " has been reassigned to agent: " + newAssignee.getEmail()
-        );
+        // // ✅ Notify owner
+        // emailService.sendMail(
+        //         ticket.getOwner().getEmail(),
+        //         "Ticket Reassigned",
+        //         "Your ticket #" + ticket.getId() + " has been reassigned to agent: " + newAssignee.getEmail()
+        // );
 
         return saved;
     }

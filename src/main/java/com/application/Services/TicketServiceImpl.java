@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
+
 
 @Service
 @RequiredArgsConstructor
@@ -34,6 +34,7 @@ public class TicketServiceImpl implements TicketService {
     @Transactional
     public Ticket createTicket(Map<String, String> body, Authentication auth) {
 
+
         User user = userRepository.findByEmail(auth.getName())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
@@ -47,20 +48,20 @@ public class TicketServiceImpl implements TicketService {
 
         Ticket saved = ticketRepository.save(ticket);
 
-        // ✅ Notify owner
-        emailService.sendMail(
-                saved.getOwner().getEmail(),
-                "Ticket Created: " + saved.getSubject(),
-                "Your ticket #" + saved.getId() +
-                        " has been created with status " + saved.getStatus()
-        );
+        // // ✅ Notify owner
+        // emailService.sendMail(
+        //         saved.getOwner().getEmail(),
+        //         "Ticket Created: " + saved.getSubject(),
+        //         "Your ticket #" + saved.getId() +
+        //                 " has been created with status " + saved.getStatus()
+        // );
 
-        // ✅ Notify admin (optional)
-        emailService.sendMail(
-                "admin@company.com",
-                "New Ticket Raised",
-                "A new ticket has been created by " + saved.getOwner().getEmail()
-        );
+        // // ✅ Notify admin (optional)
+        // emailService.sendMail(
+        //         "admin@company.com",
+        //         "New Ticket Raised",
+        //         "A new ticket has been created by " + saved.getOwner().getEmail()
+        // );
 
         return saved;
     }
